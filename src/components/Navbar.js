@@ -2,6 +2,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useContext } from 'react';
 import AuthContext from '../stores/authContext';
+import { logout } from 'netlify-identity-widget';
 
 export default function Navbar() {
   const { user, login } = useContext(AuthContext);
@@ -25,6 +26,9 @@ export default function Navbar() {
           </li>
           <li onClick={login} className="btn">
             Login/Signup
+          </li>
+          <li onClick={logout} className="btn">
+            Log out
           </li>
         </ul>
       </nav>

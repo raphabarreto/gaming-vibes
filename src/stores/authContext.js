@@ -15,19 +15,34 @@ export const AuthContextProvider = ({ children }) => {
     netlifyIdentify.on('login', (user) => {
       setUser(user);
       netlifyIdentify.close();
-      console.log('logging');
+      console.log('login event');
+    });
+
+    netlifyIdentify.on('logout', () => {
+      setUser(null);
+      console.log('logout event');
     });
 
     netlifyIdentify.init();
+
+    return () => {
+      netlifyIdentify.off('login');
+      netlifyIdentify.off('logout');
+    };
   }, []);
 
   const login = () => {
     netlifyIdentify.open();
   };
 
+  const logout = () => {
+    netlifyIdentify.logout();
+  };
+
   const context = {
     user,
     login,
+    logout,
   };
 
   return (
