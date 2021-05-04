@@ -2,10 +2,9 @@ import Link from 'next/link';
 import Image from 'next/image';
 import { useContext } from 'react';
 import AuthContext from '../stores/authContext';
-import { logout } from 'netlify-identity-widget';
 
 export default function Navbar() {
-  const { user, login } = useContext(AuthContext);
+  const { user, login, logout, authReady } = useContext(AuthContext);
   console.log(user);
 
   return (
@@ -13,30 +12,32 @@ export default function Navbar() {
       <nav>
         <Image src="/rupee.png" width={50} height={48} />
         <h1>Gaming Vibes</h1>
-        <ul>
-          <li>
-            <Link href="/">
-              <a>Home</a>
-            </Link>
-          </li>
-          <li>
-            <Link href="/guides">
-              <a>Guides</a>
-            </Link>
-          </li>
-          {!user ? (
-            <li onClick={login} className="btn">
-              Login/Signup
+        {authReady && (
+          <ul>
+            <li>
+              <Link href="/">
+                <a>Home</a>
+              </Link>
             </li>
-          ) : (
-            <>
-              <li>{user.email}</li>
-              <li onClick={logout} className="btn">
-                Log out
+            <li>
+              <Link href="/guides">
+                <a>Guides</a>
+              </Link>
+            </li>
+            {!user ? (
+              <li onClick={login} className="btn">
+                Login/Signup
               </li>
-            </>
-          )}
-        </ul>
+            ) : (
+              <>
+                <li>{user.email}</li>
+                <li onClick={logout} className="btn">
+                  Log out
+                </li>
+              </>
+            )}
+          </ul>
+        )}
       </nav>
       <div className="banner">
         <Image src="/banner.png" width={966} height={276} />
